@@ -7,6 +7,7 @@ import (
     "github.com/charmbracelet/bubbles/textinput"
     tea "github.com/charmbracelet/bubbletea"
     dt "github.com/dylhunn/dragontoothmg"
+    "github.com/Brekke-Green/go_chess_cli/fen"
 )
 
 type Game struct {
@@ -23,6 +24,22 @@ type (
     errMsg error
 ) 
 
+var translate = map[string]string {
+    "":  " ",
+	"B": "♝",
+	"K": "♚",
+    "N": "♞",
+	"P": "♟",
+	"Q": "♛",
+	"R": "♜",
+	"b": "♗",
+	"k": "♔",
+	"n": "♘",
+	"p": "♙",
+	"q": "♕",
+	"r": "♖",
+}
+
 func NewGame() *Game {
     return NewGameStart(dt.Startpos)
 }
@@ -38,6 +55,7 @@ func NewGameStart(position string) *Game {
     m.board = &board
     m.moves = m.board.GenerateLegalMoves()
     
+    
     return m
 }
 
@@ -48,9 +66,13 @@ func (m *Game) Init() tea.Cmd {
 func (m *Game) View() string {
     var s strings.Builder
     // grid := "  ┌───┬───┬───┬───┬───┬───┬───┬───┐\n8 │ ♖ │ ♘ │ ♗ │ ♕ │ ♔ │ ♗ │ ♘ │ ♖ │\n  ├───┼───┼───┼───┼───┼───┼───┼───┤\n7 │ ♙ │ ♙ │ ♙ │ ♙ │ ♙ │ ♙ │ ♙ │ ♙ │\n  ├───┼───┼───┼───┼───┼───┼───┼───┤\n6 │   │   │   │   │   │   │   │   │\n  ├───┼───┼───┼───┼───┼───┼───┼───┤\n5 │   │   │   │   │   │   │   │   │\n  ├───┼───┼───┼───┼───┼───┼───┼───┤\n4 │   │   │   │   │ . │   │   │   │\n  ├───┼───┼───┼───┼───┼───┼───┼───┤\n3 │   │   │   │   │ . │   │   │   │\n  ├───┼───┼───┼───┼───┼───┼───┼───┤\n2 │ ♟ │ ♟ │ ♟ │ ♟ │ ♟ │ ♟ │ ♟ │ ♟ │\n  ├───┼───┼───┼───┼───┼───┼───┼───┤\n1 │ ♜ │ ♞ │ ♝ │ ♛ │ ♚ │ ♝ │ ♞ │ ♜ │\n  └───┴───┴───┴───┴───┴───┴───┴───┘\n"
-    grid := m.board.ToFen()
-    // var grid = Grid(m.board.ToFen())
-    s.WriteString(grid)
+    var grid = fen.Grid(m.board.ToFen())
+    for _, row := range grid {
+        for _, letter := range row {
+            s.WriteString(translate[letter])
+        }
+        s.WriteString("\n")
+    }
     return s.String()
 }
 
