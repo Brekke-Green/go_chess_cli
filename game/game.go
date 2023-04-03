@@ -5,6 +5,7 @@ import (
     "strings"
 
     "github.com/charmbracelet/bubbles/textinput"
+    //"github.com/charmbracelet/lipgloss"
     tea "github.com/charmbracelet/bubbletea"
     dt "github.com/dylhunn/dragontoothmg"
     "github.com/Brekke-Green/go_chess_cli/fen"
@@ -18,6 +19,10 @@ type Game struct {
     buffer      string
     err         error
     textInput   textinput.Model
+}
+
+type ScoreSheet struct {
+    sheet       []string
 }
 
 type (
