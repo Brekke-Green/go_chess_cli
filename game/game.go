@@ -1,7 +1,7 @@
 package game
 
 import (
-//    "fmt"
+    "fmt"
     "strings"
 
     "github.com/charmbracelet/bubbles/textinput"
@@ -78,7 +78,11 @@ func (m *Game) View() string {
         }
         s.WriteString("\n")
     }
-    return s.String()
+    
+    return fmt.Sprintf("%s\n\n%s",
+        s.String(),
+        m.textInput.View(),
+    )
 }
 
 func (m *Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
